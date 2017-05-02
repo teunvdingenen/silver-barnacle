@@ -53,10 +53,10 @@ def is_muted():
 	return is_mute
 
 def mute():
-	subprocess.Popen(['amixer sset Mic nocap'], shell=True)
+	subprocess.Popen(['amixer -c 1 sset Mic nocap'], shell=True, stdout=subprocess.PIPE)
 
 def unmute():
-	subprocess.Popen(['amixer sset Mic cap'], shell=True)
+	subprocess.Popen(['amixer -c 1 sset Mic cap'], shell=True, stdout=subprocess.PIPE )
 
 if __name__ == '__main__':
 	strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS)
@@ -68,10 +68,9 @@ if __name__ == '__main__':
 		FRAME+= 0.0008
 		if HORNTIMER > 8000:
 			HORN_LIFTED = not GPIO.input(INPUT_PIN)
-			muted = is_muted()
-			if HORN_LIFTED and muted:
+			if HORN_LIFTED:
 				unmute()	
-			elif not HORN_LIFTED and not muted:
+			elif not HORN_LIFTED:
 				mute()
 			HORNTIMER = 0
 		else:
