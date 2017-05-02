@@ -35,14 +35,14 @@ HORNTIMER = 0
 HORN_LIFTED = False
 
 def wave(strip, frame):
-	for j in range(0, strip.numPixels()):
+	for j in range(strip.numPixels()):
 		c = AMP * sin(2*pi*frame + j) + AMP
 		color = Color(int(RED*c),int(GREEN*c),int(BLUE*c))
 		strip.setPixelColor(j,color)
 	strip.show() 
 
 def is_muted():
-	process = subprocess.Popen(['amixer sget Mic'], shell=True, stdout=subprocess.PIPE )
+	process = subprocess.Popen(['amixer -c 1 sget Mic'], shell=True, stdout=subprocess.PIPE )
 	output = process.communicate()[0].split("\n")
 	is_mute = False
 
@@ -65,12 +65,15 @@ if __name__ == '__main__':
 	GPIO.setup(INPUT_PIN, GPIO.IN)
 
 	while True:
-		FRAME+= 0.0008
+		if FRAME*100 % 1 == 0:
+			wave(strip, FRAME)
+		FRAME+= 0.0010
 		if HORNTIMER > 8000:
 			HORN_LIFTED = not GPIO.input(INPUT_PIN)
-			if HORN_LIFTED:
-				unmute()	
-			elif not HORN_LIFTED:
+			muted = is_muted()
+			if HORN_LIFTED and muted:
+				unmute()
+			elif not HORN_LIFTED and not muted:
 				mute()
 			HORNTIMER = 0
 		else:
@@ -98,7 +101,6 @@ if __name__ == '__main__':
 			TIMER = 0
 			RING = False
 
-		#wave(strip, FRAME)
 		if os.path.exists('ring'):
 			RING = True
 			TIMER = 0
