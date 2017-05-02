@@ -7,7 +7,7 @@ from math import *
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT      = 24      # Number of LED pixels.
+LED_COUNT      = 1      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
@@ -39,7 +39,5 @@ if __name__ == '__main__':
 	strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS)
 	strip.begin()
 	while True:
-		for j in range(0, strip.numPixels()):
-			color = Color(RED,GREEN,BLUE)
-			strip.setPixelColor(j,color)
+		strip.setPixelColorRGB(0,255,0,0)
 		strip.show()
