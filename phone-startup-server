@@ -6,7 +6,7 @@
 # add webhook start
 # add gpio script
 
-mumble mumble://$HOSTNAME@localhost/?version=1.2.0
+mumble mumble://$HOSTNAME@localhost/?version=1.2.0 &
 
 cd /home/pi/dev/project/
 python phone.py &

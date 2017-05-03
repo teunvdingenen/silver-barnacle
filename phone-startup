@@ -6,7 +6,7 @@
 # add webhook start
 # add gpio script
 
-mumble mumble://$HOSTNAME@192.168.0.1/?version=1.2.0
+mumble mumble://$HOSTNAME@192.168.0.1/?version=1.2.0 &
 
 cd /home/pi/dev/silver-barnacle/
 python phone.py &

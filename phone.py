@@ -8,7 +8,7 @@ import time
 import RPi.GPIO as GPIO
 
 INPUT_PIN = 27
-OUTPUT_PIN = 23
+OUTPUT_PIN = 21
 
 RING = False
 TIMER = 0
@@ -24,8 +24,8 @@ def unmute():
 if __name__ == '__main__':
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(INPUT_PIN, GPIO.IN)
-	# GPIO.setup(OUTPUT_PIN, GPIO.OUT)
-	# GPIO.output(OUTPUT_PIN, False)	
+	GPIO.setup(OUTPUT_PIN, GPIO.OUT)
+	GPIO.output(OUTPUT_PIN, 0)	
 
 	while True:
 		HORN_LIFTED = not GPIO.input(INPUT_PIN)
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 		if HORN_LIFTED:
 			if RINGTIMER == 0:
 				try:
-					r = requests.get("http://192.168.0.2:4567/?ring")
+					r = requests.get("http://192.168.0.1:4567/?ring")
 				except requests.exceptions.RequestException as e:
 					m = 0 # do nothing
 			RINGTIMER += 1
@@ -45,11 +45,13 @@ if __name__ == '__main__':
 		if TIMER > 6:
 			TIMER = 0
 			RING = False
-		else:
-			TIMER += 1
+			GPIO.output(OUTPUT_PIN, 0)
 
 		if os.path.exists('ring'):
 			RING = True
 			TIMER = 0
 			os.remove('ring')
+		if RING:
+			GPIO.output(OUTPUT_PIN, 1)
+			TIMER += 1
 		time.sleep(0.5)
