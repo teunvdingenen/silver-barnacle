@@ -9,4 +9,5 @@
 mumble mumble://$HOSTNAME@192.168.0.1/?version=1.2.0
 
 cd /home/pi/dev/silver-barnacle/
-python phone.py
+python phone.py &
+python webhook.py &
