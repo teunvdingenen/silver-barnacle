@@ -24,8 +24,8 @@ def unmute():
 if __name__ == '__main__':
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(INPUT_PIN, GPIO.IN)
-	GPIO.setup(OUTPUT_PIN, GPIO.OUT)
-	GPIO.output(OUTPUT_PIN, False)	
+	# GPIO.setup(OUTPUT_PIN, GPIO.OUT)
+	# GPIO.output(OUTPUT_PIN, False)	
 
 	while True:
 		HORN_LIFTED = not GPIO.input(INPUT_PIN)
